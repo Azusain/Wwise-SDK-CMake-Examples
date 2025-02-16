@@ -10,7 +10,7 @@ bool InitSoundEngine() {
   AK::MemoryMgr::GetDefaultSettings(memSettings);
   if (AK::MemoryMgr::Init(&memSettings) != AK_Success) {
     std::cout << "failed to init memory manager\n";
-    return 1;
+    return false;
   }
   return true;
 }
