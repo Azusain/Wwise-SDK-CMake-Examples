@@ -1,8 +1,14 @@
 
+#define BANKNAME_INIT L"Init.bnk"
+#define BANKNAME_CAR L"Car.bnk"
+#define BANKNAME_HUMAN L"Human.bnk"
+#define BANKNAME_MARKERTEST L"MarkerTest.bnk"
+
 #include "AK/SoundEngine/Common/AkSoundEngine.h"
 #include "AK/SoundEngine/Common/AkStreamMgrModule.h"
 #include "AK/SoundEngine/Common/AkTypes.h"
 #include "AK/SoundEngine/Platforms/Mac/AkMacSoundEngine.h"
+#include "AK/SoundEngine/Platforms/POSIX/AkTypes.h"
 #include <AK/SoundEngine/Common/AkMemoryMgr.h>
 #include <AK/SoundEngine/Common/AkMemoryMgrModule.h>
 #include <AK/SoundEngine/Common/IAkStreamMgr.h>
@@ -70,7 +76,21 @@ int main(int, char **) {
     return 1;
   }
 
-  TermSoundEngine();
+  // init soundbanks.
+  g_lowLevelIO.SetBasePath(
+      AKTEXT("/Applications/Audiokinetic/Wwise2024.1.2.8726/SDK/samples/"
+             "IntegrationDemo/WwiseProject/GeneratedSoundBanks/Mac"));
+  AK::StreamMgr::SetCurrentLanguage(AKTEXT("English(US)"));
+  AkBankID bankID;
+  AKRESULT eResult = AK::SoundEngine::LoadBank(BANKNAME_INIT, bankID);
+  assert(eResult == AK_Success);
+  eResult = AK::SoundEngine::LoadBank(BANKNAME_CAR, bankID);
+  assert(eResult == AK_Success);
+  eResult = AK::SoundEngine::LoadBank(BANKNAME_HUMAN, bankID);
+  assert(eResult == AK_Success);
+  eResult = AK::SoundEngine::LoadBank(BANKNAME_MARKERTEST, bankID);
+  assert(eResult == AK_Success);
 
+  TermSoundEngine();
   return 0;
 }

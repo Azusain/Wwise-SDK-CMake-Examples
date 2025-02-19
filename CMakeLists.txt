@@ -6,6 +6,9 @@ set(WWISE_LIBRARY_PATH "${WWISE_SDK_PATH}/Mac_Xcode1600/Debug/lib")
 set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 set(CMAKE_CXX_STANDARD 14)
 set(SAMPLE_SOUND_ENGINE_DIR "/Applications/Audiokinetic/Wwise2024.1.2.8726/SDK/samples/SoundEngine")
+# remember to install the required plugins from the Wwise launcher.
+set(CMAKE_BUILD_RPATH "/Applications/Audiokinetic/Wwise2024.1.2.8726/SDK/Mac_Xcode1600/Debug/bin")
+
 # Create the executable
 # ref: https://www.audiokinetic.com/zh/library/edge/?source=SDK&id=streamingdevicemanager.html
 file(GLOB_RECURSE SOUND_ENGINE_COMMON_SRC
