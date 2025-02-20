@@ -74,20 +74,21 @@ void TermSoundEngine() {
 }
 
 // call it only after initiating the sound engine.
-void PlaySomething() {
-  AkGameObjectID emitter = 1;
-  AkGameObjectID listener = 2;
-  AK::SoundEngine::RegisterGameObj(emitter);
-  AK::SoundEngine::RegisterGameObj(listener);
-  AkSoundPosition sound_pos;
-  // ref(xyz):
-  // https://www.audiokinetic.com/zh/library/edge/?source=SDK&id=soundengine_3dpositions.html.
-  sound_pos.SetPosition(0.5, 0, 0.5);
-  sound_pos.SetOrientation(-1, 0, 0, 0, 1, 0);
-  AK::SoundEngine::SetPosition(emitter, sound_pos);
-  AK::SoundEngine::SetDefaultListeners(&listener, 1);
-  AK::SoundEngine::PostEvent(AK::EVENTS::PLAY_KICK, emitter);
-}
+// void PlaySomething() {
+//   AkGameObjectID emitter = 1;
+//   AkGameObjectID listener = 2;
+//   AK::SoundEngine::RegisterGameObj(emitter);
+//   AK::SoundEngine::RegisterGameObj(listener);
+//   AkSoundPosition sound_pos;
+//   // ref(xyz):
+//   //
+//   https://www.audiokinetic.com/zh/library/edge/?source=SDK&id=soundengine_3dpositions.html.
+//   sound_pos.SetPosition(0.5, 0, 0.5);
+//   sound_pos.SetOrientation(-1, 0, 0, 0, 1, 0);
+//   AK::SoundEngine::SetPosition(emitter, sound_pos);
+//   AK::SoundEngine::SetDefaultListeners(&listener, 1);
+//   AK::SoundEngine::PostEvent(AK::EVENTS::PLAY_KICK, emitter);
+// }
 
 int main(int, char **) {
   if (!InitSoundEngine()) {
@@ -106,11 +107,26 @@ int main(int, char **) {
   eResult = AK::SoundEngine::LoadBank("Main.bnk", bankID);
   assert(eResult == AK_Success);
 
+  AkGameObjectID game_obj = 1;
+  AkGameObjectID listener = 2;
+  AK::SoundEngine::RegisterGameObj(game_obj);
+  AK::SoundEngine::RegisterGameObj(listener);
+  AK::SoundEngine::PostEvent(AK::EVENTS::PLAY_KICK, game_obj);
+  AK::SoundEngine::SetDefaultListeners(&listener, 1);
+
+  // PlaySomething();
+  AkRtpcValue val = 0;
+  AK::SoundEngine::SetRTPCValue(AK::GAME_PARAMETERS::HEALTH, val, game_obj);
   // render the audio on a per-frame basis.
+  AK::SoundEngine::SetState(AK::STATES::ISALIVE::GROUP,
+                            AK::STATES::ISALIVE::STATE::ALIVE);
   while (true) {
-    PlaySomething();
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+    AK::SoundEngine::SetState(AK::STATES::ISALIVE::GROUP,
+                              AK::STATES::ISALIVE::STATE::DEAD);
     AK::SoundEngine::RenderAudio();
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
 
   TermSoundEngine();
