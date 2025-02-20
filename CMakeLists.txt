@@ -27,6 +27,8 @@ target_include_directories(wwise_sdk_test PUBLIC
 "${WWISE_SDK_PATH}/include"
 "${SAMPLE_SOUND_ENGINE_DIR}/POSIX"
 "${SAMPLE_SOUND_ENGINE_DIR}/Common"
+# integration DEMO
+"/Users/azusain/Documents/WwiseProjects/MyFirstWwiseProject1/GeneratedSoundBanks/"
 )
 
 # Link libraries
